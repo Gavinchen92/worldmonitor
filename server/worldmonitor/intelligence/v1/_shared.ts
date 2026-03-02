@@ -7,8 +7,8 @@
 // ========================================================================
 
 export const UPSTREAM_TIMEOUT_MS = 30_000;
-export const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
-export const GROQ_MODEL = 'llama-3.1-8b-instant';
+export const DEEPSEEK_API_URL = process.env.DEEPSEEK_API_URL || 'https://api.deepseek.com/chat/completions';
+export const DEEPSEEK_MODEL = process.env.DEEPSEEK_MODEL || 'deepseek-chat';
 
 // ========================================================================
 // Tier-1 country definitions (used by risk-scores + country-intel-brief)

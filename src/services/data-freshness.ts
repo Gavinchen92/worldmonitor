@@ -295,13 +295,13 @@ class DataFreshnessTracker {
    */
   getTimeSince(sourceId: DataSourceId): string {
     const source = this.sources.get(sourceId);
-    if (!source?.lastUpdate) return 'never';
+    if (!source?.lastUpdate) return '从未';
 
     const ms = Date.now() - source.lastUpdate.getTime();
-    if (ms < 60000) return 'just now';
-    if (ms < 3600000) return `${Math.floor(ms / 60000)}m ago`;
-    if (ms < 86400000) return `${Math.floor(ms / 3600000)}h ago`;
-    return `${Math.floor(ms / 86400000)}d ago`;
+    if (ms < 60000) return '刚刚';
+    if (ms < 3600000) return `${Math.floor(ms / 60000)}分钟前`;
+    if (ms < 86400000) return `${Math.floor(ms / 3600000)}小时前`;
+    return `${Math.floor(ms / 86400000)}天前`;
   }
 }
 

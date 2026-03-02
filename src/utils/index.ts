@@ -12,10 +12,10 @@ export function formatTime(date: Date): string {
     if (diff < 86400) return rtf.format(-Math.round(diff / 3600), 'hour');
     return rtf.format(-Math.round(diff / 86400), 'day');
   } catch (e) {
-    if (diff < 60) return 'Just now';
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-    return `${Math.floor(diff / 86400)}d ago`;
+    if (diff < 60) return '刚刚';
+    if (diff < 3600) return `${Math.floor(diff / 60)}分钟前`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}小时前`;
+    return `${Math.floor(diff / 86400)}天前`;
   }
 }
 

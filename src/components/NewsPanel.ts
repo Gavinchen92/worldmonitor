@@ -166,11 +166,11 @@ export class NewsPanel extends Panel {
         this.setCachedSummary(cacheKey, result.summary);
         this.showSummary(result.summary);
       } else {
-        this.summaryContainer.innerHTML = '<div class="panel-summary-error">Could not generate summary</div>';
+        this.summaryContainer.innerHTML = `<div class="panel-summary-error">${t('components.newsPanel.summaryGenerateFailed')}</div>`;
         setTimeout(() => this.hideSummary(), 3000);
       }
     } catch {
-      this.summaryContainer.innerHTML = '<div class="panel-summary-error">Summary failed</div>';
+      this.summaryContainer.innerHTML = `<div class="panel-summary-error">${t('components.newsPanel.summaryFailed')}</div>`;
       setTimeout(() => this.hideSummary(), 3000);
     } finally {
       this.isSummarizing = false;
@@ -198,7 +198,7 @@ export class NewsPanel extends Panel {
         titleEl.textContent = translated;
         titleEl.dataset.original = originalText;
         element.innerHTML = '✓';
-        element.title = 'Original: ' + originalText;
+        element.title = t('components.newsPanel.originalTitle', { text: originalText });
         element.classList.add('translated');
       } else {
         element.innerHTML = '文';
@@ -344,12 +344,12 @@ export class NewsPanel extends Panel {
         <div class="item-source">
           ${escapeHtml(item.source)}
           ${item.lang && item.lang !== getCurrentLanguage() ? `<span class="lang-badge">${item.lang.toUpperCase()}</span>` : ''}
-          ${item.isAlert ? '<span class="alert-tag">ALERT</span>' : ''}
+          ${item.isAlert ? `<span class="alert-tag">${t('components.newsPanel.alertTag')}</span>` : ''}
         </div>
         <a class="item-title" href="${sanitizeUrl(item.link)}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a>
         <div class="item-time">
           ${formatTime(item.pubDate)}
-          ${getCurrentLanguage() !== 'en' ? `<button class="item-translate-btn" title="Translate" data-text="${escapeHtml(item.title)}">文</button>` : ''}
+          ${getCurrentLanguage() !== 'en' ? `<button class="item-translate-btn" title="${t('components.newsPanel.translate')}" data-text="${escapeHtml(item.title)}">文</button>` : ''}
         </div>
       </div>
     `
@@ -549,14 +549,14 @@ export class NewsPanel extends Panel {
           ${sourceBadge}
           ${velocityBadge}
           ${sentimentBadge}
-          ${cluster.isAlert ? '<span class="alert-tag">ALERT</span>' : ''}
+          ${cluster.isAlert ? `<span class="alert-tag">${t('components.newsPanel.alertTag')}</span>` : ''}
           ${categoryBadge}
         </div>
         <a class="item-title" href="${sanitizeUrl(cluster.primaryLink)}" target="_blank" rel="noopener">${escapeHtml(cluster.primaryTitle)}</a>
         <div class="cluster-meta">
           <span class="top-sources">${topSourcesHtml}</span>
           <span class="item-time">${formatTime(cluster.lastUpdated)}</span>
-          ${getCurrentLanguage() !== 'en' ? `<button class="item-translate-btn" title="Translate" data-text="${escapeHtml(cluster.primaryTitle)}">文</button>` : ''}
+          ${getCurrentLanguage() !== 'en' ? `<button class="item-translate-btn" title="${t('components.newsPanel.translate')}" data-text="${escapeHtml(cluster.primaryTitle)}">文</button>` : ''}
         </div>
         ${relatedAssetsHtml}
       </div>

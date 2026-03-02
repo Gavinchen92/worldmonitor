@@ -2,8 +2,9 @@ import { getApiBaseUrl, isDesktopRuntime } from './runtime';
 import { invokeTauri } from './tauri-bridge';
 
 export type RuntimeSecretKey =
-  | 'GROQ_API_KEY'
-  | 'OPENROUTER_API_KEY'
+  | 'DEEPSEEK_API_KEY'
+  | 'DEEPSEEK_API_URL'
+  | 'DEEPSEEK_MODEL'
   | 'FRED_API_KEY'
   | 'EIA_API_KEY'
   | 'CLOUDFLARE_API_TOKEN'
@@ -105,20 +106,20 @@ export const RUNTIME_FEATURES: RuntimeFeatureDefinition[] = [
     name: 'Ollama local summarization',
     description: 'Local LLM provider via OpenAI-compatible endpoint (Ollama or LM Studio, desktop-first).',
     requiredSecrets: ['OLLAMA_API_URL', 'OLLAMA_MODEL'],
-    fallback: 'Falls back to Groq, then OpenRouter, then local browser model.',
+    fallback: 'Falls back to DeepSeek cloud, then local browser model.',
   },
   {
     id: 'aiGroq',
-    name: 'Groq summarization',
-    description: 'Primary fast LLM provider used for AI summary generation.',
-    requiredSecrets: ['GROQ_API_KEY'],
-    fallback: 'Falls back to OpenRouter, then local browser model.',
+    name: 'DeepSeek summarization',
+    description: 'Primary cloud LLM provider used for AI summary generation.',
+    requiredSecrets: ['DEEPSEEK_API_KEY'],
+    fallback: 'Falls back to local browser model.',
   },
   {
     id: 'aiOpenRouter',
-    name: 'OpenRouter summarization',
-    description: 'Secondary LLM provider for AI summary fallback.',
-    requiredSecrets: ['OPENROUTER_API_KEY'],
+    name: 'DeepSeek compatibility fallback',
+    description: 'Legacy cloud fallback path, now routed to DeepSeek with the same key.',
+    requiredSecrets: ['DEEPSEEK_API_KEY'],
     fallback: 'Falls back to local browser model only.',
   },
   {
@@ -264,6 +265,7 @@ const URL_SECRET_KEYS = new Set<RuntimeSecretKey>([
   'WS_RELAY_URL',
   'VITE_OPENSKY_RELAY_URL',
   'OLLAMA_API_URL',
+  'DEEPSEEK_API_URL',
 ]);
 
 export interface SecretVerificationResult {

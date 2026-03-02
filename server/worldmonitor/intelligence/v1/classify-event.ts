@@ -6,7 +6,7 @@ import type {
 } from '../../../../src/generated/server/worldmonitor/intelligence/v1/service_server';
 
 import { cachedFetchJson } from '../../../_shared/redis';
-import { UPSTREAM_TIMEOUT_MS, GROQ_API_URL, GROQ_MODEL, hashString } from './_shared';
+import { UPSTREAM_TIMEOUT_MS, DEEPSEEK_API_URL, DEEPSEEK_MODEL, hashString } from './_shared';
 import { CHROME_UA } from '../../../_shared/constants';
 
 // ========================================================================
@@ -39,7 +39,7 @@ export async function classifyEvent(
   _ctx: ServerContext,
   req: ClassifyEventRequest,
 ): Promise<ClassifyEventResponse> {
-  const apiKey = process.env.GROQ_API_KEY;
+  const apiKey = process.env.DEEPSEEK_API_KEY;
   if (!apiKey) return { classification: undefined };
 
   // Input sanitization (M-14 fix): limit title length
@@ -65,11 +65,11 @@ Focus: geopolitical events, conflicts, disasters, diplomacy. Classify by real-wo
 
 Return: {"level":"...","category":"..."}`;
 
-          const resp = await fetch(GROQ_API_URL, {
+          const resp = await fetch(DEEPSEEK_API_URL, {
             method: 'POST',
             headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json', 'User-Agent': CHROME_UA },
             body: JSON.stringify({
-              model: GROQ_MODEL,
+              model: DEEPSEEK_MODEL,
               messages: [
                 { role: 'system', content: systemPrompt },
                 { role: 'user', content: title },

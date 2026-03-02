@@ -379,7 +379,7 @@ export class InsightsPanel extends Panel {
           : '';
         const result = await generateSummary(titles, (_step, _total, msg) => {
           // Show sub-progress for summarization
-          this.setProgress(3, totalSteps, `Generating brief: ${msg}`);
+          this.setProgress(3, totalSteps, `生成简报：${msg}`);
         }, geoContext, undefined, summarizeOpts);
 
         if (this.updateGeneration !== thisGeneration) return;
@@ -393,13 +393,13 @@ export class InsightsPanel extends Panel {
         }
       } else {
         usedCachedBrief = true;
-        this.setProgress(3, totalSteps, 'Using cached brief...');
+        this.setProgress(3, totalSteps, '使用缓存简报...');
       }
 
       this.setDataBadge(worldBrief ? (usedCachedBrief ? 'cached' : 'live') : 'unavailable');
 
       // Step 4: Wait for parallel analysis to complete
-      this.setProgress(4, totalSteps, 'Multi-perspective analysis...');
+      this.setProgress(4, totalSteps, '多视角分析中...');
       await parallelPromise;
 
       if (this.updateGeneration !== thisGeneration) return;
@@ -407,7 +407,7 @@ export class InsightsPanel extends Panel {
       this.renderInsights(importantClusters, sentiments, worldBrief);
     } catch (error) {
       console.error('[InsightsPanel] Error:', error);
-      this.setContent('<div class="insights-error">Analysis failed - retrying...</div>');
+      this.setContent('<div class="insights-error">分析失败，正在重试...</div>');
     }
   }
 
@@ -431,7 +431,7 @@ export class InsightsPanel extends Panel {
       ${sentimentOverview}
       ${statsHtml}
       <div class="insights-section">
-        <div class="insights-section-title">BREAKING & CONFIRMED</div>
+        <div class="insights-section-title">突发与确认</div>
         ${breakingHtml}
       </div>
       ${missedHtml}
@@ -441,7 +441,7 @@ export class InsightsPanel extends Panel {
   private renderWorldBrief(brief: string): string {
     return `
       <div class="insights-brief">
-        <div class="insights-section-title">${SITE_VARIANT === 'tech' ? '🚀 TECH BRIEF' : '🌍 WORLD BRIEF'}</div>
+        <div class="insights-section-title">${SITE_VARIANT === 'tech' ? '🚀 科技简报' : '🌍 世界简报'}</div>
         <div class="insights-brief-text">${escapeHtml(brief)}</div>
       </div>
     `;
@@ -459,18 +459,18 @@ export class InsightsPanel extends Panel {
       const badges: string[] = [];
 
       if (cluster.sourceCount >= 3) {
-        badges.push(`<span class="insight-badge confirmed">✓ ${cluster.sourceCount} sources</span>`);
+        badges.push(`<span class="insight-badge confirmed">✓ ${cluster.sourceCount} 个来源</span>`);
       } else if (cluster.sourceCount >= 2) {
-        badges.push(`<span class="insight-badge multi">${cluster.sourceCount} sources</span>`);
+        badges.push(`<span class="insight-badge multi">${cluster.sourceCount} 个来源</span>`);
       }
 
       if (cluster.velocity && cluster.velocity.level !== 'normal') {
         const velIcon = cluster.velocity.trend === 'rising' ? '↑' : '';
-        badges.push(`<span class="insight-badge velocity ${cluster.velocity.level}">${velIcon}+${cluster.velocity.sourcesPerHour}/hr</span>`);
+        badges.push(`<span class="insight-badge velocity ${cluster.velocity.level}">${velIcon}+${cluster.velocity.sourcesPerHour}/小时</span>`);
       }
 
       if (cluster.isAlert) {
-        badges.push('<span class="insight-badge alert">⚠ ALERT</span>');
+        badges.push('<span class="insight-badge alert">⚠ 警报</span>');
       }
 
       return `

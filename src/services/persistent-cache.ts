@@ -168,9 +168,9 @@ export function cacheAgeMs(updatedAt: number): number {
 export function describeFreshness(updatedAt: number): string {
   const age = cacheAgeMs(updatedAt);
   const mins = Math.floor(age / 60000);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 1) return '刚刚';
+  if (mins < 60) return `${mins}分钟前`;
   const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
+  if (hrs < 24) return `${hrs}小时前`;
+  return `${Math.floor(hrs / 24)}天前`;
 }

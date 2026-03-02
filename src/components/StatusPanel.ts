@@ -110,9 +110,9 @@ export class StatusPanel extends Panel {
   public formatTime(date: Date): string {
     const now = Date.now();
     const diff = now - date.getTime();
-    if (diff < 60000) return 'just now';
-    if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    if (diff < 60000) return '刚刚';
+    if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`;
+    return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
   }
 
   public getElement(): HTMLElement {

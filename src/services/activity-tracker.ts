@@ -153,13 +153,13 @@ class ActivityTracker {
     const elapsed = Date.now() - firstSeen;
 
     if (elapsed < 60000) {
-      return 'just now';
+      return '刚刚';
     } else if (elapsed < 3600000) {
       const mins = Math.floor(elapsed / 60000);
-      return `${mins}m ago`;
+      return `${mins}分钟前`;
     } else {
       const hours = Math.floor(elapsed / 3600000);
-      return `${hours}h ago`;
+      return `${hours}小时前`;
     }
   }
 

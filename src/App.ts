@@ -213,16 +213,15 @@ export class App {
         const total = getTotalFeedCount();
         console.log(`[App] Sources reduction: ${defaultDisabled.length} disabled, ${total - defaultDisabled.length} enabled`);
       }
-      // Locale boost: additively enable locale-matched sources (runs once per locale)
-      const userLang = ((navigator.language ?? 'en').split('-')[0] ?? 'en').toLowerCase();
-      const localeKey = `worldmonitor-locale-boost-${userLang}`;
-      if (userLang !== 'en' && !localStorage.getItem(localeKey)) {
-        const boosted = getLocaleBoostedSources(userLang);
+      // Single-language mode: always use zh locale boost once.
+      const localeKey = 'worldmonitor-locale-boost-zh';
+      if (!localStorage.getItem(localeKey)) {
+        const boosted = getLocaleBoostedSources('zh');
         if (boosted.size > 0) {
           const current = loadFromStorage<string[]>(STORAGE_KEYS.disabledFeeds, []);
           const updated = current.filter(name => !boosted.has(name));
           saveToStorage(STORAGE_KEYS.disabledFeeds, updated);
-          console.log(`[App] Locale boost (${userLang}): enabled ${current.length - updated.length} sources`);
+          console.log(`[App] Locale boost (zh): enabled ${current.length - updated.length} sources`);
         }
         localStorage.setItem(localeKey, 'done');
       }

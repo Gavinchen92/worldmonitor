@@ -5,7 +5,7 @@ import type {
 } from '../../../../src/generated/server/worldmonitor/intelligence/v1/service_server';
 
 import { cachedFetchJson } from '../../../_shared/redis';
-import { UPSTREAM_TIMEOUT_MS, GROQ_API_URL, GROQ_MODEL, TIER1_COUNTRIES, hashString } from './_shared';
+import { UPSTREAM_TIMEOUT_MS, DEEPSEEK_API_URL, DEEPSEEK_MODEL, TIER1_COUNTRIES, hashString } from './_shared';
 import { CHROME_UA } from '../../../_shared/constants';
 
 // ========================================================================
@@ -26,13 +26,13 @@ export async function getCountryIntelBrief(
     countryCode: req.countryCode,
     countryName: '',
     brief: '',
-    model: GROQ_MODEL,
+    model: DEEPSEEK_MODEL,
     generatedAt: Date.now(),
   };
 
   if (!req.countryCode) return empty;
 
-  const apiKey = process.env.GROQ_API_KEY;
+  const apiKey = process.env.DEEPSEEK_API_KEY;
   if (!apiKey) return empty;
 
   let contextSnapshot = '';
@@ -75,11 +75,11 @@ Rules:
           userPromptParts.push(`Context snapshot:\n${contextSnapshot}`);
         }
 
-        const resp = await fetch(GROQ_API_URL, {
+        const resp = await fetch(DEEPSEEK_API_URL, {
           method: 'POST',
           headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json', 'User-Agent': CHROME_UA },
           body: JSON.stringify({
-            model: GROQ_MODEL,
+            model: DEEPSEEK_MODEL,
             messages: [
               { role: 'system', content: systemPrompt },
               { role: 'user', content: userPromptParts.join('\n\n') },
@@ -99,7 +99,7 @@ Rules:
           countryCode: req.countryCode,
           countryName,
           brief,
-          model: GROQ_MODEL,
+          model: DEEPSEEK_MODEL,
           generatedAt: Date.now(),
         };
       } catch {

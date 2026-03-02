@@ -4,7 +4,7 @@ import { fetchCachedTheaterPosture, type CachedTheaterPosture } from '@/services
 import { fetchMilitaryVessels } from '@/services/military-vessels';
 import { recalcPostureWithVessels, type TheaterPostureSummary } from '@/services/military-surge';
 import { isDesktopRuntime } from '@/services/runtime';
-import { t } from '../services/i18n';
+import { t, getLocale } from '../services/i18n';
 import type { NewsItem, DeductContextDetail } from '@/types';
 import { buildNewsContext } from '@/utils/news-context';
 
@@ -448,9 +448,10 @@ export class StrategicPosturePanel extends Panel {
       return (order[a.postureLevel] ?? 2) - (order[b.postureLevel] ?? 2);
     });
 
+    const locale = getLocale();
     const updatedTime = this.lastTimestamp
-      ? new Date(this.lastTimestamp).toLocaleTimeString()
-      : new Date().toLocaleTimeString();
+      ? new Date(this.lastTimestamp).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false })
+      : new Date().toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false });
 
     const staleWarning = this.isStale
       ? `<div class="posture-stale-warning">⚠️ ${t('components.strategicPosture.staleWarning')}</div>`

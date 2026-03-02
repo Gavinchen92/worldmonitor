@@ -1,6 +1,6 @@
 import { Panel } from './Panel';
 import { escapeHtml } from '@/utils/sanitize';
-import { t } from '@/services/i18n';
+import { t, getLocale } from '@/services/i18n';
 import { getCSSColor } from '@/utils';
 import {
   calculateStrategicRiskOverview,
@@ -310,7 +310,7 @@ export class StrategicRiskPanel extends Panel {
         ${this.renderRecentAlerts()}
 
         <div class="risk-footer">
-          <span class="risk-updated">${t('components.strategicRisk.updated', { time: this.overview.timestamp.toLocaleTimeString() })}</span>
+          <span class="risk-updated">${t('components.strategicRisk.updated', { time: this.overview.timestamp.toLocaleTimeString(getLocale(), { hour: '2-digit', minute: '2-digit', hour12: false }) })}</span>
           <button class="risk-refresh-btn">${t('components.strategicRisk.refresh')}</button>
         </div>
       </div>

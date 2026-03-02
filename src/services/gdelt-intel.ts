@@ -218,10 +218,10 @@ export function formatArticleDate(dateStr: string): string {
     const now = Date.now();
     const diff = now - date.getTime();
 
-    if (diff < 0) return 'just now';
-    if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
-    if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
-    return `${Math.floor(diff / 86400000)}d ago`;
+    if (diff < 0) return '刚刚';
+    if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`;
+    return `${Math.floor(diff / 86400000)}天前`;
   } catch {
     return '';
   }

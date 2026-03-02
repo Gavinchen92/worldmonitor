@@ -75,7 +75,7 @@ export class GeoHubsPanel extends Panel {
 
     const html = this.activities.map((hub, index) => {
       const trendIcon = hub.trend === 'rising' ? '↑' : hub.trend === 'falling' ? '↓' : '';
-      const breakingTag = hub.hasBreaking ? '<span class="hub-breaking geo">ALERT</span>' : '';
+      const breakingTag = hub.hasBreaking ? '<span class="hub-breaking geo">警报</span>' : '';
       const topStory = hub.topStories[0];
 
       return `

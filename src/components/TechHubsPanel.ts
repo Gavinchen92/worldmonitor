@@ -98,7 +98,7 @@ export class TechHubsPanel extends Panel {
 
     const html = this.activities.map((hub, index) => {
       const trendIcon = hub.trend === 'rising' ? '↑' : hub.trend === 'falling' ? '↓' : '';
-      const breakingTag = hub.hasBreaking ? '<span class="hub-breaking">ALERT</span>' : '';
+      const breakingTag = hub.hasBreaking ? '<span class="hub-breaking">警报</span>' : '';
       const topStory = hub.topStories[0];
 
       return `
@@ -112,7 +112,7 @@ export class TechHubsPanel extends Panel {
               ${breakingTag}
             </div>
             <div class="hub-meta">
-              <span class="hub-news-count">${hub.newsCount} ${hub.newsCount === 1 ? 'story' : 'stories'}</span>
+              <span class="hub-news-count">${hub.newsCount} 条报道</span>
               ${trendIcon ? `<span class="hub-trend ${hub.trend}">${trendIcon}</span>` : ''}
               <span class="hub-tier">${hub.tier}</span>
             </div>

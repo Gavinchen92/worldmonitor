@@ -1,11 +1,10 @@
 import { FEEDS, INTEL_SOURCES, SOURCE_REGION_MAP } from '@/config/feeds';
 import { PANEL_CATEGORY_MAP } from '@/config/panels';
 import { SITE_VARIANT } from '@/config/variant';
-import { LANGUAGES, changeLanguage, getCurrentLanguage, t } from '@/services/i18n';
+import { t } from '@/services/i18n';
 import { getAiFlowSettings, setAiFlowSetting, getStreamQuality, setStreamQuality, STREAM_QUALITY_OPTIONS } from '@/services/ai-flow-settings';
 import type { StreamQuality } from '@/services/ai-flow-settings';
 import { escapeHtml } from '@/utils/sanitize';
-import { trackLanguageChange } from '@/services/analytics';
 import type { PanelConfig } from '@/types';
 import type { StatusPanel } from './StatusPanel';
 
@@ -147,20 +146,13 @@ export class UnifiedSettings {
       }
     });
 
-    // Handle change events for toggles and language select
+    // Handle change events for toggles and selects
     this.overlay.addEventListener('change', (e) => {
       const target = e.target as HTMLInputElement;
 
       // Stream quality select
       if (target.id === 'us-stream-quality') {
         setStreamQuality(target.value as StreamQuality);
-        return;
-      }
-
-      // Language select
-      if (target.closest('.unified-settings-lang-select')) {
-        trackLanguageChange(target.value);
-        void changeLanguage(target.value);
         return;
       }
 
@@ -291,7 +283,6 @@ export class UnifiedSettings {
 
   private renderGeneralContent(): string {
     const settings = getAiFlowSettings();
-    const currentLang = getCurrentLanguage();
 
     let html = '';
 
@@ -338,15 +329,6 @@ export class UnifiedSettings {
     for (const opt of STREAM_QUALITY_OPTIONS) {
       const selected = opt.value === currentQuality ? ' selected' : '';
       html += `<option value="${opt.value}"${selected}>${opt.label}</option>`;
-    }
-    html += `</select>`;
-
-    // Language section
-    html += `<div class="ai-flow-section-label">${t('header.languageLabel')}</div>`;
-    html += `<select class="unified-settings-lang-select">`;
-    for (const lang of LANGUAGES) {
-      const selected = lang.code === currentLang ? ' selected' : '';
-      html += `<option value="${lang.code}"${selected}>${lang.flag} ${lang.label}</option>`;
     }
     html += `</select>`;
 
@@ -417,8 +399,8 @@ export class UnifiedSettings {
       html += `<div class="status-row">
         <span class="status-dot ${feed.status}"></span>
         <span class="status-name">${escapeHtml(feed.name)}</span>
-        <span class="status-detail">${feed.itemCount} items</span>
-        <span class="status-time">${feed.lastUpdate ? sp.formatTime(feed.lastUpdate) : 'Never'}</span>
+        <span class="status-detail">${t('components.status.itemCount', { count: feed.itemCount })}</span>
+        <span class="status-time">${feed.lastUpdate ? sp.formatTime(feed.lastUpdate) : t('components.status.never')}</span>
       </div>`;
     }
     html += `</div>`;
@@ -454,8 +436,8 @@ export class UnifiedSettings {
         const used = estimate.usage ? (estimate.usage / 1024 / 1024).toFixed(2) : '0';
         const quota = estimate.quota ? (estimate.quota / 1024 / 1024).toFixed(0) : 'N/A';
         container.innerHTML = `<div class="status-row">
-          <span class="status-name">IndexedDB</span>
-          <span class="status-detail">${used} MB / ${quota} MB</span>
+          <span class="status-name">${t('components.status.indexedDb')}</span>
+          <span class="status-detail">${t('components.status.storageUsage', { used, quota })}</span>
         </div>`;
       } else {
         container.innerHTML = `<div class="status-row">${t('components.status.storageUnavailable')}</div>`;

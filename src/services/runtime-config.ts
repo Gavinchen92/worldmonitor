@@ -30,7 +30,6 @@ export type RuntimeSecretKey =
 
 export type RuntimeFeatureId =
   | 'aiGroq'
-  | 'aiOpenRouter'
   | 'economicFred'
   | 'energyEia'
   | 'internetOutages'
@@ -79,7 +78,6 @@ function getSidecarSecretValidateUrl(): string {
 
 const defaultToggles: Record<RuntimeFeatureId, boolean> = {
   aiGroq: true,
-  aiOpenRouter: true,
   economicFred: true,
   energyEia: true,
   internetOutages: true,
@@ -115,13 +113,7 @@ export const RUNTIME_FEATURES: RuntimeFeatureDefinition[] = [
     requiredSecrets: ['DEEPSEEK_API_KEY'],
     fallback: 'Falls back to local browser model.',
   },
-  {
-    id: 'aiOpenRouter',
-    name: 'DeepSeek compatibility fallback',
-    description: 'Legacy cloud fallback path, now routed to DeepSeek with the same key.',
-    requiredSecrets: ['DEEPSEEK_API_KEY'],
-    fallback: 'Falls back to local browser model only.',
-  },
+
   {
     id: 'economicFred',
     name: 'FRED economic indicators',
